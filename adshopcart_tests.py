@@ -7,7 +7,7 @@ from time import sleep
 class MoodleAppPositiveTestCases(unittest.TestCase):
 
     @staticmethod
-    def test_create_new_user():
+    def test_advantage_shopping_cart():
         methods.setUp()
         sleep(2)
         # methods.log_in(locators.moodle_username, locators.moodle_password)

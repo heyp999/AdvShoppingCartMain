@@ -27,6 +27,7 @@ driver = webdriver.Chrome()
 
 # Fixture method - to open web browser
 def setUp():
+    print('This is automation test for Advantage Shopping Cart website')
     print(f'Test Started at: {datetime.datetime.now()}')
     print(f'--------------------------------------')
     # Make a full screen
