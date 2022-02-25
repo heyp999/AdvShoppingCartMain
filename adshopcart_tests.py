@@ -4,7 +4,7 @@ from time import sleep
 
 
 # unittest case
-class MoodleAppPositiveTestCases(unittest.TestCase):
+class ShoppingCartAppPositiveTestCases(unittest.TestCase):
 
     @staticmethod
     def test_advantage_shopping_cart():
