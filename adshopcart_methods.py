@@ -6,7 +6,7 @@ import adshopcart_locators as locators
 # import pytest
 # from selenium.webdriver.common.by import By
 # from selenium.webdriver.support.ui import Select
-# from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service
 # from selenium.webdriver.common.keys import Keys
 # from selenium.webdriver.chrome.options import Options
 
@@ -22,7 +22,8 @@ import adshopcart_locators as locators
 # options.add_argument("--disable-dev-shm-usage")
 # driver = webdriver.Chrome(options=options)
 # -------------for run in the background--------------
-driver = webdriver.Chrome()
+s = Service(executable_path='../chromedriver')
+driver = webdriver.Chrome(service=s)
 
 
 # Fixture method - to open web browser
@@ -34,7 +35,7 @@ def setUp():
     driver.maximize_window()
     # Let's wait for the browser response in general
     driver.implicitly_wait(30)
-    # Navigating to the Moodle app website
+    # Navigating to the website homepage
     driver.get(locators.adshopcart_url)
     # Checking that we're on the correct URL address and we're seeing correct title
     if driver.current_url == locators.adshopcart_url and driver.title == '\xa0Advantage Shopping':
