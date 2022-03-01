@@ -13,6 +13,10 @@ last_name = fake.last_name()
 full_name = f'{first_name} {last_name}'
 email = fake.email()
 city = fake.city()
+phone = fake.phone_number()
+address = fake.address().split("\n")[0]
+province = fake.province()[0: 10]
+postal_code = fake.postcode()
 description = fake.sentence(nb_words=100)
 pic_desc = fake.user_name()
 phonetic_name = fake.user_name()
@@ -23,4 +27,4 @@ institution = fake.lexify(text='????????????????????')
 department = fake.lexify(text='???????')
 phone = fake.phone_number()
 mobile_phone = fake.phone_number()
-address = fake.address().replace("\n", " ")
+
