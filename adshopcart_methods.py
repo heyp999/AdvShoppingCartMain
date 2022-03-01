@@ -7,7 +7,7 @@ from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 # from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.common.action_chains import ActionChains
 # from selenium.webdriver.common.keys import Keys
 # from selenium.webdriver.chrome.options import Options
@@ -96,8 +96,8 @@ def register_new_user():
     driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "My account")]').click()
     if driver.find_element(By.XPATH, f'//*[@id="myAccountContainer"]//label[contains(., "{locators.full_name}")]').\
             is_displayed():
-        print(f"new username:'{locators.full_name}' is displayed.")
-        print(f"new user account:'{locators.full_name}' is created successfully at {datetime.datetime.now()}.")
+        print(f"User full_name:'{locators.full_name}' is displayed at My account page.")
+        print(f"new user account:'{locators.new_username}' is created successfully at {datetime.datetime.now()}.")
     sleep(1)
     driver.find_element(By.ID, "menuUserLink").click()
     driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "My orders")]').click()
@@ -110,7 +110,6 @@ def register_new_user():
 
 # login with credentials(username and password)
 def login(username, password):
-    driver.refresh()
     driver.find_element(By.ID, 'menuUserLink').click()
     if driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "Sign out")]').is_displayed():
         driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "Sign out")]').click()
@@ -130,7 +129,6 @@ def login(username, password):
 
 # logout
 def logout():
-    driver.refresh()
     driver.find_element(By.ID, 'menuUserLink').click()
     if driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "Sign out")]').is_displayed():
         driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "Sign out")]').click()
