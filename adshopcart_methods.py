@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.common.action_chains import ActionChains
@@ -35,7 +36,7 @@ def setup():
     print(f'Test Started at: {datetime.datetime.now()}')
     print(f'--------------------------------------')
     # Let's wait for the browser response in general
-    driver.implicitly_wait(30)
+    driver.implicitly_wait(10)
     # Navigating to the website homepage
     driver.get(locators.adshopcart_url)
     # Make a full screen
@@ -76,7 +77,7 @@ def register_new_user():
     driver.find_element(By.CSS_SELECTOR, "input[name='first_nameRegisterPage']").send_keys(locators.first_name)
     driver.find_element(By.CSS_SELECTOR, "input[name='last_nameRegisterPage']").send_keys(locators.last_name)
     driver.find_element(By.CSS_SELECTOR, "input[name='phone_numberRegisterPage']").send_keys(locators.phone)
-    Select(driver.find_element(By.CSS_SELECTOR, "select[name='countryListboxRegisterPage']")).\
+    Select(driver.find_element(By.CSS_SELECTOR, "select[name='countryListboxRegisterPage']")). \
         select_by_visible_text('Canada')
     driver.find_element(By.CSS_SELECTOR, "input[name='cityRegisterPage']").send_keys(locators.city)
     driver.find_element(By.CSS_SELECTOR, "input[name='addressRegisterPage']").send_keys(locators.address)
@@ -94,7 +95,7 @@ def register_new_user():
     sleep(1)
     driver.find_element(By.ID, "menuUserLink").click()
     driver.find_element(By.XPATH, '//*[@id="loginMiniTitle"]/label[contains(., "My account")]').click()
-    if driver.find_element(By.XPATH, f'//*[@id="myAccountContainer"]//label[contains(., "{locators.full_name}")]').\
+    if driver.find_element(By.XPATH, f'//*[@id="myAccountContainer"]//label[contains(., "{locators.full_name}")]'). \
             is_displayed():
         print(f"User full_name:'{locators.full_name}' is displayed at My account page.")
         print(f"new user account:'{locators.new_username}' is created successfully at {datetime.datetime.now()}.")
@@ -171,11 +172,65 @@ def check_user_account_deleted(username, password):
         print("After check, User account:'{username}' still alive.")
 
 
+# check homepage elements
+def check_homepage():
+    print("I am checking the 'advantage shopping cart' homepage elements")
+
+    # Check that SPEAKERS, TABLETS, HEADPHONES, LAPTOPS, MICE texts are displayed
+    check_list = ["SPEAKERS", "TABLETS", "TABLETS", "LAPTOPS", "MICE"]
+    for ele in check_list:
+        if driver.find_element(By.XPATH, f"//span[contains(., '{ele}')]").is_displayed():
+            print(f"We can see '{ele}' link on the homepage")
+        else:
+            print("'{ele}' link is not displayed on the homepage!")
+
+    #  Click by SPECIAL OFFER, POPULAR ITEMS and CONTACT US links at the top nav menu are clickable
+    check_list = ["OUR PRODUCTS", "SPECIAL OFFER", "POPULAR ITEMS", "CONTACT US"]
+    for ele in check_list:
+        if driver.find_element(By.LINK_TEXT, ele).is_displayed():
+            print(f"We can see '{ele}' link at the top nav menu of homepage")
+            try:
+                driver.find_element(By.LINK_TEXT, ele).click()
+                print(f"The Menu link of '{ele}' is clickable")
+            except Exception:
+                print(f"There is something wrong when click Menu link of '{ele}'")
+
+        else:
+            print("'{ele}' link is not displayed at the top nav menu of homepage!")
+
+    #  Check main logo is displayed
+    if driver.find_element(By.ID, "Layer_1").is_displayed() and \
+            driver.find_element(By.XPATH, f"//span[contains(., 'dvantage')]").is_displayed() and \
+            driver.find_element(By.XPATH, f"//span[contains(., 'DEMO')]").is_displayed():
+        print(f"We can see 'Advantage DEMO' logo at the top nav menu of homepage")
+    else:
+        print(f"We can\'t see 'Advantage DEMO' logo at the homepage")
+
+    # Check CONTACT US form is working properly.
+    # Check CONTINUE SHOPPING button is displayed after submitting the form. Click on it
+    driver.find_element(By.LINK_TEXT, "CONTACT US").click()
+    Select(driver.find_element(By.CSS_SELECTOR, "select[name='categoryListboxContactUs']")). \
+        select_by_visible_text('Headphones')
+    sleep(2)
+    Select(driver.find_element(By.CSS_SELECTOR, "select[name='productListboxContactUs']")). \
+        select_by_index(1)
+    driver.find_element(By.CSS_SELECTOR, 'input[name="emailContactUs"]').clear()
+    driver.find_element(By.CSS_SELECTOR, 'input[name="emailContactUs"]').send_keys(locators.email)
+    driver.find_element(By.CSS_SELECTOR, 'textarea[name="subjectTextareaContactUs"]').clear()
+    driver.find_element(By.CSS_SELECTOR, 'textarea[name="subjectTextareaContactUs"]').send_keys(locators.description)
+    driver.find_element(By.ID, 'send_btnundefined').click()
+    if driver.find_element(By.XPATH,
+                           "//p[contains(.,'Thank you for contacting Advantage support.')]").is_displayed() and \
+            driver.find_element(By.XPATH, "//a[contains(.,' CONTINUE SHOPPING ')]").is_displayed():
+        print("We\'re seeing the Message 'Thank you for contacting Advantage support' and 'CONTINUE SHOPPING' BUTTON.")
+
+
 if __name__ == "__main__":
     setup()
-    register_new_user()
-    logout()
-    login(locators.new_username, locators.new_password)
-    del_current_user()
-    check_user_account_deleted(locators.new_username, locators.new_password)
+    check_homepage()
+    # register_new_user()
+    # logout()
+    # login(locators.new_username, locators.new_password)
+    # del_current_user()
+    # check_user_account_deleted(locators.new_username, locators.new_password)
     teardown()

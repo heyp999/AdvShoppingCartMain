@@ -17,7 +17,7 @@ phone = fake.phone_number()
 address = fake.address().split("\n")[0]
 province = fake.province()[0: 10]
 postal_code = fake.postcode()
-description = fake.sentence(nb_words=100)
+description = fake.sentence(nb_words=30)
 pic_desc = fake.user_name()
 phonetic_name = fake.user_name()
 list_of_interests = [new_username, new_password, full_name, email, city]
